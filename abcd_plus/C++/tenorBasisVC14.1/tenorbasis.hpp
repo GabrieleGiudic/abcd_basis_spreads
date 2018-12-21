@@ -30,11 +30,22 @@
 #include <ql/termstructures/iterativebootstrap.hpp>
 #include <ql/termstructures/yield/bootstraptraits.hpp>
 #include <ql/math/interpolations/linearinterpolation.hpp>
-#include <ql/experimental/tenorbasis/forwardhelpers.hpp>
-#include <ql/experimental/tenorbasis/fwdratecurve.hpp>
+//#include <ql/experimental/tenorbasis/forwardhelpers.hpp>
+//#include <ql/experimental/tenorbasis/fwdratecurve.hpp>
 
 
 namespace QuantLib {
+
+	class CalibrationRateHelper : public CalibrationHelperBase {
+
+	public:
+		CalibrationRateHelper(const boost::shared_ptr<RateHelper>& rateHelper);
+
+		Real calibrationError();
+
+		boost::shared_ptr<RateHelper> rateHelper_;
+
+	};
 
 	class IborIndex;
 
@@ -116,14 +127,14 @@ namespace QuantLib {
 			const std::vector<Real>& weights = std::vector<Real>(),
 			const std::vector<bool>& fixParameters = std::vector<bool>());
 
-		// calibration on forward rate
+		/*// calibration on forward rate
 		void forwardCalibrate(
 			const std::vector<boost::shared_ptr<ForwardHelper> >&,
 			OptimizationMethod& method,
 			const EndCriteria& endCriteria
 			= EndCriteria(1000, 100, 1.0e-8, 0.3e-4, 0.3e-4),
 			const std::vector<Real>& weights = std::vector<Real>(),
-			const std::vector<bool>& fixParameters = std::vector<bool>());
+			const std::vector<bool>& fixParameters = std::vector<bool>());*/
 
 	protected:
 		//! \name Integral functions
@@ -242,7 +253,7 @@ namespace QuantLib {
 	};
 
 	//! Helper class for the calibration directly on forward rates
-	class TenorBasisForwardRateCurve : public ForwardRateCurve {
+	/*class TenorBasisForwardRateCurve : public ForwardRateCurve {
 	public:
 		TenorBasisForwardRateCurve(const boost::shared_ptr<TenorBasis>& basis);
 		const Date& referenceDate() const;
@@ -336,7 +347,7 @@ namespace QuantLib {
 		friend class IterativeBootstrap<ForwardCorrectedTermStructure>;
 		friend class BootstrapError<ForwardCorrectedTermStructure>;
 		IterativeBootstrap<ForwardCorrectedTermStructure> bootstrap_;
-	};
+	};*/
 
 	class AcdtTenorBasis : public AbcdTenorBasis {
 	public:
@@ -361,7 +372,7 @@ namespace QuantLib {
 			const std::vector<Real> & weights,
 			const std::vector<bool> & fixParameters);
 
-		Real calibrationError()const;
+		Real calibrationError();
 		std::vector<boost::shared_ptr<RateHelper>>& getHelpers();
 		boost::shared_ptr<OptimizationMethod>& getMethod();
 		EndCriteria& getEndCriteria();
@@ -378,16 +389,7 @@ namespace QuantLib {
 		std::vector<bool> fixParameters_;
 
 	};
-	class CalibrationRateHelper : public CalibrationHelperBase {
-
-	public:
-		CalibrationRateHelper(const boost::shared_ptr<RateHelper>& rateHelper);
-
-		Real calibrationError()const;
-
-		boost::shared_ptr<RateHelper> rateHelper_;
-
-	};
+	
 
 
 	class GlobalModel : public CalibratedModel {

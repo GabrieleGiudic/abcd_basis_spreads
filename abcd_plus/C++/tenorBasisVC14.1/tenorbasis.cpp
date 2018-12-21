@@ -32,6 +32,15 @@ namespace QuantLib {
 	}
 
 
+	Real CalibrationRateHelper::calibrationError()
+	{
+		return rateHelper_->quoteError();
+	};
+
+	CalibrationRateHelper::CalibrationRateHelper(const boost::shared_ptr<RateHelper>& rateHelper)
+		:rateHelper_(rateHelper) {};
+
+
 	TenorBasis::TenorBasis(Size nArguments,
 		shared_ptr<IborIndex> iborIndex,
 		boost::shared_ptr<IborIndex> baseIborIndex,
@@ -71,11 +80,9 @@ namespace QuantLib {
 
 		std::vector<boost::shared_ptr<CalibrationHelperBase> >
 			cH(h.size());
-		std::vector<boost::shared_ptr<CalibrationRateHelper> >
-			cRHelpers(h.size());
 
 		for (Size i = 0; i < h.size(); ++i) {
-			cH[i] = shared_ptr<CalibrationRateHelper>(new CalibrationRateHelper(h[i]));
+			cH[i] = boost::shared_ptr<CalibrationHelperBase>(new CalibrationRateHelper(h[i]));
 		}
 		Real value;
 		return value = CalibratedModel::value(params, cH);
@@ -204,17 +211,16 @@ namespace QuantLib {
 			yts(boost::shared_ptr<TenorBasis>(this, no_deletion));
 		std::vector<boost::shared_ptr<CalibrationHelperBase> >
 			cHelpers(helpers.size());
-		std::vector<boost::shared_ptr<CalibrationRateHelper> >
-			cRHelpers(helpers.size());
 
 		for (Size i = 0; i < helpers.size(); ++i) {
 			helpers[i]->setTermStructure(&yts);
-			cHelpers[i] = shared_ptr<CalibrationRateHelper> (new CalibrationRateHelper(helpers[i]));
+
+			cHelpers[i] = boost::shared_ptr<CalibrationHelperBase> (new CalibrationRateHelper(helpers[i]));
 		}
 		CalibratedModel::calibrate(cHelpers, method, endCriteria,
 			constraint(), weights, fixParameters);
 	}
-
+	/*
 	void TenorBasis::forwardCalibrate(
 		const std::vector<boost::shared_ptr<ForwardHelper> >& helpers,
 		OptimizationMethod& method,
@@ -231,7 +237,7 @@ namespace QuantLib {
 		}
 		CalibratedModel::calibrate(cHelpers, method, endCriteria,
 			constraint(), weights, fixParameters);
-	}
+	}*/
 
 	namespace {
 
@@ -469,7 +475,7 @@ namespace QuantLib {
 		Real accrFactor = basis_->accrualFactor(ref, d);
 		return 1.0 / accrFactor;
 	}
-
+/*
 	TenorBasisForwardRateCurve::TenorBasisForwardRateCurve(
 		const boost::shared_ptr<TenorBasis>& basis)
 		: ForwardRateCurve(basis->iborIndex()->familyName(),
@@ -634,7 +640,7 @@ namespace QuantLib {
 
 	void ForwardCorrectedTermStructure::performCalculations() const {
 		bootstrap_.calculate();
-	}
+	}*/
 
 	AcdtTenorBasis::AcdtTenorBasis(boost::shared_ptr<IborIndex> iborIndex,
 		boost::shared_ptr<IborIndex> baseIborIndex,
@@ -718,7 +724,7 @@ namespace QuantLib {
 
 
 
-	Real GlobalHelper::calibrationError()const
+	Real GlobalHelper::calibrationError()
 	{
 
 		/*it asks its calibratedModel_ to calibrate itself and then asks the error*/
@@ -748,14 +754,6 @@ namespace QuantLib {
 		return fixParameters_;
 	};
 
-
-	Real CalibrationRateHelper::calibrationError()const
-	{
-		rateHelper_->quoteError();
-	};
-
-	CalibrationRateHelper::CalibrationRateHelper(const boost::shared_ptr<RateHelper>& rateHelper)
-		:rateHelper_(rateHelper) {};
 
 	//global model
 	/*
