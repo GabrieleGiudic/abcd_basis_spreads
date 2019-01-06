@@ -127,6 +127,8 @@ namespace QuantLib {
 			const std::vector<Real>& weights = std::vector<Real>(),
 			const std::vector<bool>& fixParameters = std::vector<bool>());
 
+		virtual std::vector<Real> parameterConversion(std::vector<Real> coeff, std::vector<Real> guess)const = 0;
+
 		/*// calibration on forward rate
 		void forwardCalibrate(
 			const std::vector<boost::shared_ptr<ForwardHelper> >&,
@@ -196,6 +198,10 @@ namespace QuantLib {
 		Spread instBasisMaximumValue() const;
 		//! long term continuous tenor basis
 		Spread instBasisLongTermValue() const { return instBasis_->d(); }
+		//! converting {a,d,s_max, t_max} in {a,b,c,d}
+		std::vector<Real> parameterConversion(std::vector<Real> coeff, std::vector<Real> guess)const;
+		Real parameterConversionError(Real c, Real a, Real d, Real sMax, Real tMax) const;
+		virtual std::vector<Real> cadstToCoeff(Real c, std::vector<Real> adst) const;
 	protected:
 		//! \name TenorBasis Interface
 		//@{
@@ -360,6 +366,7 @@ namespace QuantLib {
 		void generateArguments();
 		Real b(std::vector<Parameter> param);
 		std::vector<Real> coeffAbcd(std::vector<Real> coeff);
+		std::vector<Real> cadstToCoeff(Real c, std::vector<Real> adst)const;
 	};
 
 	class GlobalHelper : public CalibrationHelperBase {

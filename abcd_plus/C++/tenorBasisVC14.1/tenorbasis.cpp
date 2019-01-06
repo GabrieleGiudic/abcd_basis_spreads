@@ -395,6 +395,38 @@ namespace QuantLib {
 		return instBasis_->definiteIntegral(t1, t2);
 	}
 
+	Real AbcdTenorBasis::parameterConversionError(Real c, Real a, Real d, Real sMax, Real tMax) const {
+		Real b = (a*c) / (1 - tMax * c);
+		//! sMax- its functional form
+		return sMax - (b / c)*exp((a*c) / b - 1) + d;
+	}
+
+	std::vector<Real> AbcdTenorBasis::cadstToCoeff(Real c, std::vector<Real> adst) const {
+		std::vector<Real> coeff;
+		coeff.push_back(adst[0]);
+		coeff.push_back((adst[0] * c) / (1 - adst[3] * c));
+		coeff.push_back(c);
+		coeff.push_back(adst[1]);
+		return coeff;
+	}
+
+	std::vector<Real> AbcdTenorBasis::parameterConversion(std::vector<Real> coeff, std::vector<Real> guess) const {
+		Brent solver;
+		//!Accuracy is hardcoded but fine, because it is just a conversion for the guess
+		Real accuracy = 0.0000001;
+		//!It makes no sense to have a negative c and 3 is hardcoeded and considered sufficiently large for c
+		Real min = 0.0, max = 3.0;
+		//!The guess vector in this case is just a scalar "c"
+		Real guess_ = guess[0];
+		//!Setup solver
+		boost::function <Real(Rate)> error;
+		Real a = coeff[0], d = coeff[1], sMax = coeff[2], tMax = coeff[3], c;
+		error = boost::bind(&this->parameterConversionError, _1, a, d, sMax, tMax);
+		c = solver.solve(error, accuracy, guess_, min, max);
+		//!return an acdt vector of coefficient
+		return cadstToCoeff(c, coeff);
+	}
+
 
 	PolynomialTenorBasis::PolynomialTenorBasis(
 		shared_ptr<IborIndex> iborIndex,
@@ -711,6 +743,15 @@ namespace QuantLib {
 
 		return coeffAbcd;
 	};
+
+	std::vector<Real> AcdtTenorBasis::cadstToCoeff(Real c, std::vector<Real> adst) const {
+		std::vector<Real> coeff;
+		coeff.push_back(adst[0]);
+		coeff.push_back(c);
+		coeff.push_back(adst[1]);
+		coeff.push_back(adst[3]);
+		return coeff;
+	}
 
 
 	GlobalHelper::GlobalHelper(const boost::shared_ptr<TenorBasis>& calibratedModel,

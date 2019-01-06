@@ -11,6 +11,8 @@ Copyright (C) 2003, 2004, 2005, 2006, 2007 StatPro Italia srl
 
 Copyright (C) 2004 Ferdinando Ametrano
 
+Copyright (C) 2019 Gabriele Giudici
+
 
 
 This file is part of QuantLib, a free-software/open-source library
@@ -1549,9 +1551,9 @@ int main(int, char*[]) {
 	//weights of RateHelpers errors
 
 	std::vector<QuantLib::Real> w;
-	int size = depoFRASwapInstruments.size();
+	Integer size = depoFRASwapInstruments.size();
 	w.resize(size);
-	for (int i = 0;i < size;i++) {
+	for (Integer i = 0;i < size;i++) {
 		w[i] = 1.0;
 	}
 
@@ -1619,9 +1621,9 @@ int main(int, char*[]) {
 
 	//weights
 	std::vector<QuantLib::Real> w2;
-	int size2 = depoFutSwapInstruments_.size();
+	Integer size2 = depoFutSwapInstruments_.size();
 	w2.resize(size2);
-	for (int i = 0;i < size2;i++) {
+	for (Integer i = 0;i < size2;i++) {
 		w2[i] = 1.0;
 	}
 
@@ -1773,6 +1775,38 @@ int main(int, char*[]) {
 
 	std::cout << std::endl;
 
+	std::cout << "Parameter conversion" << std::endl; std::cout << std::endl;
+
+	std::vector<Real> adst;
+	adst.push_back(0.00004417701262085);
+	adst.push_back(0.001300);
+	adst.push_back(0.001742);
+	adst.push_back(1.803269756);
+	std::cout << "a=" << adst[0] << std::endl;
+	std::cout << "d=" << adst[1] << std::endl;
+	std::cout << "s=" << adst[2] << std::endl;
+	std::cout << "t=" << adst[3] << std::endl;
+
+	std::vector<Real> adstToAcdt;
+	std::vector<Real> guess;
+	guess.push_back(0.213381);
+	Real acc= 0.000000000000001;
+	Real max=1;
+	Real min=-1;
+	adstToAcdt = tenorBasisAcdt1->parameterConversion(adst,guess,acc,min,max);
+
+	std::cout << "a=" << adstToAcdt[0] << std::endl;
+	std::cout << "c=" << adstToAcdt[1] << std::endl;
+	std::cout << "d=" << adstToAcdt[2] << std::endl;
+	std::cout << "t=" << adstToAcdt[3] << std::endl;
+	std::cout << "c guess=" << abcd[2] << std::endl;
+
+
+
+
+
+	std::cout << std::endl;
+
 	/*********************
 
 	* Global Helpers *
@@ -1781,8 +1815,8 @@ int main(int, char*[]) {
 
 	//weights
 	std::vector<QuantLib::Real> weights;
-	weights.resize(size);
-	for (int i = 0;i < size;i++) {
+	weights.resize(size-1);
+	for (Integer i = 0;i < size-1;i++) {
 		weights[i] = 1.0;
 	}
 
@@ -1924,10 +1958,10 @@ int main(int, char*[]) {
 	//save guesses
 	params1 = tenorBasisAcdt1->params(); //get parameters
 	params2 = tenorBasisAcdt2->params(); //get parameters
-
+	std::vector<Real> fff;
 	//calibration
 	//GM.calibrate(helperVec, *LevTot, endCriteria, weightsTot, fixPara);
-	GM.calibrate(*LevTot, endCriteria, weightsTot, fixPara);
+	GM.calibrate(*LevTot, endCriteria,fff, fixPara);
 	//outputs
 
 	std::vector<Real> acdt1_;
