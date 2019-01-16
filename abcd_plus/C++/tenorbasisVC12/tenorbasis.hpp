@@ -355,11 +355,21 @@ namespace QuantLib {
                            bool isSimple,
                            const std::vector<Real>& coeff);
 
+			AcdtTenorBasis(boost::shared_ptr<IborIndex> iborIndex,
+				boost::shared_ptr<IborIndex> baseIborIndex,
+				Date referenceDate,
+				bool isSimple,
+				const std::vector<Real>& coeff,
+				bool rebuilding);
+
             void generateArguments();
             Real b(std::vector<Parameter> param);
-            std::vector<Real> coeffAbcd(std::vector<Real> coeff);
+            std::vector<Real> acdtToAbcd(std::vector<Real> coeff);
+			std::vector<Real> abcdToAcdt(std::vector<Real> coeff);
 			std::vector<Real> cadstToCoeff(const Real & c, const std::vector<Real> & adst)const;
-    };
+
+			bool rebuilding_;
+	};
 
     class GlobalHelper : public CalibrationHelperBase {
         public:
@@ -400,6 +410,10 @@ namespace QuantLib {
                        const EndCriteria& endCriteria,
                        const std::vector<Real>& weights,
                        const std::vector<bool>& fixParameters);
+		std::vector<Real> calibrateCacheParameters(OptimizationMethod& method,
+			const EndCriteria& endCriteria,
+			const std::vector<Real>& weights,
+			const std::vector<bool>& fixParameters);
     protected:
         std::vector<Integer> position_;
         std::vector<boost::shared_ptr<GlobalHelper>> helpers_;

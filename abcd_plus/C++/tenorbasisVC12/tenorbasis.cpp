@@ -3,7 +3,7 @@
 /*
  Copyright (C) 2015, 2016 Ferdinando Ametrano
  Copyright (C) 2015, 2016 Paolo Mazzocchi
- Copyright (C) 2018 Gabriele Giudici
+ Copyright (C) 2019 Gabriele Giudici
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -305,7 +305,8 @@ namespace QuantLib {
         arguments_[2] = ConstantParameter(y[2], NoConstraint());
         arguments_[3] = ConstantParameter(y[3], NoConstraint());
         isSimple_ = isSimple;
-        generateArguments();
+		generateArguments();
+	
     }
 
     Constraint AbcdTenorBasis::constraint() const {
@@ -377,7 +378,7 @@ namespace QuantLib {
 
 	Real AbcdTenorBasis::parameterConversionError(const Real & c, const Real & a, const Real & d, const Real & sMax, const Real & tMax) const {
 		Real b = (a*c) / (1 - tMax * c);
-		//! sMax- its functional form
+		//! s(t_max)- its functional form
 		return sMax - ((b / c)*exp((a*c) / b - 1) + d);
 	}
 
@@ -400,7 +401,7 @@ namespace QuantLib {
 		boost::function <Real(Rate)> error(boost::bind(&AbcdTenorBasis::parameterConversionError,this, _1, a, d, sMax, tMax));
 		c = solver.solve(error, accuracy, guess_, min, max);
 		//!return an acdt vector of coefficient
-		return cadstToCoeff(c, coeff);
+		return this->cadstToCoeff(c, coeff);
 	}
 
 
@@ -655,7 +656,8 @@ namespace QuantLib {
                                    bool isSimple,
                                    const std::vector<Real>& coeff)
     : AbcdTenorBasis(iborIndex, baseIborIndex, referenceDate, 
-                     isSimple, coeffAbcd(coeff)) {
+                     isSimple, acdtToAbcd(coeff)) {
+
         //std::vector<Real> y = inverse(coeff);
 		std::vector<Real> y = coeff;
         arguments_[0] = ConstantParameter(y[0], NoConstraint());
@@ -663,7 +665,29 @@ namespace QuantLib {
         arguments_[2] = ConstantParameter(y[2], NoConstraint());
         arguments_[3] = ConstantParameter(y[3], NoConstraint()); //t_max
         isSimple_ = isSimple;
-        generateArguments();
+		generateArguments();
+	
+	}
+
+	AcdtTenorBasis::AcdtTenorBasis(boost::shared_ptr<IborIndex> iborIndex,
+		boost::shared_ptr<IborIndex> baseIborIndex,
+		Date referenceDate,
+		bool isSimple,
+		const std::vector<Real>& coeff,
+		bool rebuilding)
+		: AbcdTenorBasis(iborIndex, baseIborIndex, referenceDate,
+			isSimple, acdtToAbcd(coeff)),rebuilding_(rebuilding) {
+		if (rebuilding_) {
+			//std::vector<Real> y = inverse(coeff);
+			std::vector<Real> y = coeff;
+			arguments_[0] = ConstantParameter(y[0], NoConstraint());
+			arguments_[1] = ConstantParameter(y[1], NoConstraint());
+			arguments_[2] = ConstantParameter(y[2], NoConstraint());
+			arguments_[3] = ConstantParameter(y[3], NoConstraint()); //t_max
+			isSimple_ = isSimple;
+			generateArguments();
+		}
+
 	}
 
     //similar to AbcdTenorBasis::generateArguments()
@@ -704,7 +728,7 @@ namespace QuantLib {
                                      (1 - arguments[1](0.0)*arguments[3](0.0));
     }
 
-    std::vector<Real> AcdtTenorBasis::coeffAbcd(std::vector<Real> coeff) {
+    std::vector<Real> AcdtTenorBasis::acdtToAbcd(std::vector<Real> coeff) {
         std::vector<Real> coeffAbcd;
         coeffAbcd.push_back(coeff[0]);//a
         Real implied_b = (coeff[0] * coeff[1]) / (1 - coeff[1] * coeff[3]);
@@ -714,6 +738,16 @@ namespace QuantLib {
         return coeffAbcd;
     }
 
+	std::vector<Real> AcdtTenorBasis::abcdToAcdt(std::vector<Real> coeff) {
+		std::vector<Real> coeffAcdt;
+		coeffAcdt.push_back(coeff[0]);//a
+		coeffAcdt.push_back(coeff[2]);//c
+		coeffAcdt.push_back(coeff[3]);//d
+		Real implied_t = 1/ coeff[2]- coeff[0]/ coeff[1]; //1(c-a/b
+		coeffAcdt.push_back(implied_t);//t
+		return coeffAcdt;
+	}
+
 	std::vector<Real> AcdtTenorBasis::cadstToCoeff(const Real & c, const std::vector<Real> & adst) const {
 		std::vector<Real> coeff;
 		coeff.push_back(adst[0]);
@@ -722,6 +756,8 @@ namespace QuantLib {
 		coeff.push_back(adst[3]);
 		return coeff;
 	}
+
+	
 
     GlobalHelper::GlobalHelper(
                     const boost::shared_ptr<TenorBasis>& calibratedModel,
@@ -826,6 +862,25 @@ namespace QuantLib {
         CalibratedModel::calibrate(cHelpers, method, endCriteria,
                                    this->constraint(), weights, fixParameters);
     }
+
+	std::vector<Real> GlobalModel::calibrateCacheParameters(OptimizationMethod& method,
+		const EndCriteria& endCriteria,
+		const std::vector<Real>& weights,
+		const std::vector<bool>& fixParameters) {
+
+		this->calibrate(method, endCriteria, weights, fixParameters);
+		//cache
+		std::vector<Real> cache;
+		Array params;
+
+		for (Size j = 0; j < helpers_.size(); ++j) {
+			params = helpers_[j]->calibratedModel_->params();
+			for (Size i = 0; i < params.size(); ++i)
+				cache.push_back(params[i]);
+		}
+		
+		return cache;
+	}
        
     Constraint GlobalModel::constraint() const {
         return NoConstraint();
