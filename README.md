@@ -1,10 +1,5 @@
-# The ABCD of Interest Rate Basis Spreads
-F.M. Ametrano, L. Ballabio, P. Mazzocchi
+# Beyond Abcd: State of the Art Interest Rate Basis Spreads
 
-Presented at QuantLib User Meeting, London, July 12, 2016
+Gabrele Giudici's Master Degree thesis (2019/03/22) realized with the precious support of F.M. Ametrano, L. Ballabio and P. Mazzocchi exploiting the QuantLib library.
 
-- Working Paper: http://ssrn.com/abstract=2696743
-- GitHub: https://github.com/paolomazzocchi/abcd_basis_spreads
-- Speaker Deck: https://speakerdeck.com/nando1970/the-abcd-of-interest-rate-basis-spreads
-
-We show that forward rates can be modeled as abcd parametric tenor basis spreads over the underlying overnight rate curve. This is possible for both continuously and simply compounded forward rates, with a simple approximation for converting between the corresponding basis. Increasing interest-rate tenor dominance, as empirically observed, is recovered and can be structurally enforced using a robust methodology improvement based on relative basis between the most liquid tenors. The smoothness requirement is moved from forward rate curves to tenor basis curves, properly dealing with the market evidence of jumps in forward rates. In the case of continuously compounded tenor basis, pseudo-discount factors are also available. An implementation of this methodology is available in the QuantLib open-source project.
+After the 2007-2008 financial crisis, neglected interest rate tenor basis spreads arose invalidating previous interest rates curve modelling techniques. Searchesfor parsimonious models beyond numerical bootstrapping procedures led to the “abcd” parameterization of the interest rate basis spreads. This work improves the framework using more sensible parameters with increased financial and modelling meaning, while retaining a parsimonious parameterization.

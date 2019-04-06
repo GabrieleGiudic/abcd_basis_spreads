@@ -1,0 +1,46 @@
+\usepackage{amsmath}
+\usepackage{frontespizio}
+\usepackage{hyperref}
+\usepackage{xfrac}
+\usepackage[english]{babel}
+\usepackage{float}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage[chapter]{algorithm}
+\usepackage{hyperref}
+\lstset { 
+    language=C++,
+    breaklines=true
+    backgroundcolor=\color{black!1}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+     frame=tb, % draw a frame at the top and bottom of the code block
+    tabsize=4, % tab space width
+    showstringspaces=false, % don't mark spaces in strings
+    %numbers=left, % display line numbers on the left
+    commentstyle=\color{black}, % comment color
+    keywordstyle=\color{blue}, % keyword color
+    stringstyle=\color{black} % string color
+}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+%\addbibresource{bibliography.bib}
+\usepackage{datetime}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\graphicspath{ {./images/} }
+\usepackage{datetime}
+\makeatletter
+\setlength{\@fptop}{0pt}
+\let\oldforall\forall
+\let\forall\undefined
+\DeclareMathOperator{\forall}{\oldforall}
+\usepackage{array}
+\usepackage{xcolor}
+%\hypersetup{
+%    colorlinks,
+%    linkcolor={red!50!black},
+%    citecolor={blue!50!black},
+%    urlcolor={blue!80!black}
+%}

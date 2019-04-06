@@ -1,0 +1,70 @@
+\documentclass[a4paper,titlepage,12pt,openany,oneside]{book}
+
+\input{beginning/Packages}
+
+\begin{document}
+
+%front page
+\input{beginning/FrontPageTesi}
+
+%beginning
+\frontmatter
+
+%switch off page number 
+\pagenumbering{gobble}
+
+%abstract short sentence
+%\null\vspace{\stretch{1}} 
+%\begin{flushright}
+%For Gemma and my Family
+%\end{flushright}
+%\vspace{\stretch{2}}\null
+
+%abstract
+\input{beginning/Abstract.tex}
+
+%acknowledgment
+\input{beginning/Acknowledgment.tex}
+%\input{beginning/AlternativeAknow.tex}
+
+
+%table of contents
+\tableofcontents
+%\listoffigures
+
+%switch on page number 
+\pagenumbering{roman}
+
+%introduction
+\input{beginning/Introduction}
+
+
+%chapters
+\mainmatter
+\input{chapters/Interest_Rate.tex}
+
+\input{chapters/Multicurve_bootstrapping.tex}
+
+\input{chapters/The_ABCD_of_interest_Rate_Basis_Spread.tex}
+
+\input{chapters/Abcd_Framework.tex}
+
+\input{chapters/Abcd_Reparameterization.tex}
+
+\input{chapters/Acdt_Framework.tex}
+
+\input{chapters/Fixing_t.tex}
+
+\input{chapters/Fixing_t_and_c.tex}
+
+\input{end/Conclusions.tex}
+
+%End
+\backmatter
+\nocite{*}
+
+%bibliography
+\bibliographystyle{plain}
+\bibliography{bibliography}{}
+
+\end{document}

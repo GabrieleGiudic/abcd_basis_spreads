@@ -1,0 +1,244 @@
+\chapter{Introduction}
+\label{chap:intro}
+
+{Given the ABCD interest rate basis spread model \cite{ametrano_ballabio_mazzocchi}, the aim of this work is to reparameterize it, to modify the calibration process in accordance with the following explanation and to empirically verify the methodology robustness.\footnote{In order to fully appreciated the research contents, the Author structured the work with a bottom up approach , which follows the ``medias res" Introduction, starting from the interest rate fundamentals.}
+\section*{Basis time of maximum}
+
+In the interest rate multiple curves environment, independently from the considered tenor, the market uncertainty is expected to be on the same point of time $t_{max}$.
+In fact, there are no financial reasons why the market should forecast different uncertainty horizons for different tenors.
+Therefore, considering the time of maximum functional form of an instantaneous abcd basis:
+
+\begin{equation}
+t_{max}(x)=\dfrac{1}{c_{x}} - \dfrac{a_{x}} {b_{x}}
+\label{eqn:max_time_tenor_dependent}
+\end{equation}
+
+it is possible to rewrite it independently from the considered x tenor, making $t_{max}$ an implied constraint of the basis parameters:
+
+\begin{equation}
+t_{max}=\dfrac{1}{c_{x}} - \dfrac{a_{x}} {b_{x}}\,.
+\label{eqn:max_time}
+\end{equation}
+
+The above equation shows how the $t_{max}$ needs to be the same for each tenor, thanks to the relation (tenor dependent) amongst $a$, $b$ and $c$.
+
+A huge role is played by $c$, its value is strictly related with the maximum time, because given the maximum time functional (continuous time) form \eqref{eqn:max_time_tenor_dependent} and considering that empirically the magnitude of:
+
+\begin{equation*}
+\dfrac{1}{c_{x}}
+\end{equation*}
+
+dominates the ratio between $a_{x}$ and $b_{x}$, the value of $c$ explains a large part of the value of $t_{max}$. Therefore, in order to fix $t_{max}$ it makes sense to fix $c$.
+If $c$ is fixed then \eqref{eqn:max_time} becomes:
+
+\begin{equation}
+t_{max}=\dfrac{1}{c} - \dfrac{a_{x}} {b_{x}}\,.
+\label{eqn:max_time_fixed_c}
+\end{equation}
+
+This means that, in order to have the same $t_{max}$ for different tenors, there should be an implied relation between $a$ and $b$ that holds for each tenor, which for 2 generic tenor $x$ and $y$ is:
+
+\begin{equation}
+    \dfrac{a_{x}} {b_{x}}=\dfrac{a_{y}} {b_{y}}\,.
+\end{equation}
+
+
+Concluding, strictly related with $t_{max}$ is the corresponding value of the abcd:
+
+\begin{equation}
+s_{x}(t_{max})=\frac{b_{x}}{c_{x}} e^{(\frac{a_{x}c_{x}}{b_{x}}-1)} +d_{x} \,.
+\label{eqn:max_func}
+\end{equation}
+
+
+\section*{Common c}
+
+``If the exponential term is the same a difference between abcd/ABCD basis is an abcd/ABCD function". 
+This is clear from a mathematical point of view indicating:
+\begin{itemize}
+\item $x$ as the first generic tenor;
+\item $y$ as the second generic tenor, where: $x > y$;
+\item $x, y$ as the difference of the above mentioned tenor: $x - y$.
+\end{itemize}
+
+It follows that, because of the tenor basis dominance explained in \cite{ametrano_ballabio_mazzocchi}, given two absolute basis:
+
+\begin{equation*}
+s_{x}(t)>s_{y}(t), \forall t > 0 
+\end{equation*}
+
+and
+
+\begin{equation*}
+s_{x}(t)-s_{y}(t), \forall t > 0
+\end{equation*}
+
+such that their respective abcd forms are:
+
+\begin{equation*}
+s_{x}(t) = (a_{x}+b_{x}t)e^{-c_{x}t}+d_{x}
+\end{equation*}
+
+and
+
+\begin{equation*}
+s_{y}(t) = (a_{y}+b_{y}t)e^{-c_{y}t}+d_{y}
+\end{equation*}
+
+if $c_{x}=c_{y}=c_{x,y}$ then the relative basis is still an abcd function:
+
+\begin{equation}
+\begin{split}
+s_{x,y}(t)& =s_{x}(t)-s_{y}(t)\\
+& =(a_{x}+b_{x}t)e^{-c_{x}t}+d_{x}-((a_{y}+b_{y}t)e^{-c_{y}t}+d_{y})\\
+& =(a_{x}-a_{y}+(b_{x}-b_{y})t)e^{-c_{x,y}t}+d_{x}-d_{y}\\
+& =(a_{x,y}+b_{x,y}t)e^{-c_{x,y}t}+d_{x,y}\,.
+\end{split}
+\end{equation}
+
+Where the above reported equation is obtained using the below reported notation:
+
+\begin{equation}
+\begin{split}
+a_{x,y}=a_{x}-a_{y};\\
+b_{x,y}=b_{x}-b_{y} ;\\
+d_{x,y}=d_{x}-d_{y} \,.\\
+\label{eq:x_y_parameters}
+\end{split}
+\end{equation}
+
+This result has been shown for continuous basis, but obviously it is equally valid for simple ones.
+
+
+Moreover, in \cite{ametrano_ballabio_mazzocchi} has been proposed an incremental calibration where, instead of modelling the instantaneous forward rate for a given tenor x $f_{x}$ as an absolute basis on the corresponding ON instantaneous forward rate $f_{ON}$:
+
+\begin{equation}
+     f_{x}(t)=s_{x}(t)+f_{ON}(t)
+     \label{eq:forward as basis + on}
+\end{equation}
+
+it is possible generalized the idea w.r.t. a general tenor y using a relative basis:
+
+\begin{equation}
+     f_{x}(t)=s_{x,y}(t)+f_{y}(t)
+     \label{eq:forward as basis + y}
+\end{equation}
+
+still modelling $s_{x}(t)$ as an abcd function.
+
+Moving forward, and considering $f_{x}$ for a generic tenor $x$, the above shown relation can be exploited.
+
+It results that:
+
+\begin{equation}
+\begin{split}
+s_{x,y}(t)& =f_{x}(t)-f_{y}(t)\\
+& =s_{x}(t)+f_{ON}(t)-s_{y}(t)-f_{ON}(t)\\
+& =s_{x}(t)-s_{y}(t)\\
+\end{split}
+\label{eq:still_abcd}
+\end{equation}
+
+is still an abcd basis, if the two basis share the common exponential term.
+
+However, is it true that, given two generic tenors $x$ and $y$, if: 
+
+\begin{equation}
+    c_{x} \neq c_{y}
+\end{equation}
+
+then the relative basis $s_{x,y}$ is not an abcd function?
+Empirical results show how it would seem that $s_{x,y}$ is still an abcd.
+%\footnote{ $Abcd\_Double\_Hump\_Research.xlsx$ from the sheet $impact\_time\_dependent\_d\_lab$}%
+
+% reductio per absurdum
+Before going through algebraic calculus to proof this guess, it's preferred to proceed with a ``reductio per absurdum". If the statement: ``an abcd function shows only one $t_{max}$" is contradicted, then $s_{x,y}$ won't be an abcd function.
+
+Given:
+
+\begin{equation}
+\begin{split}
+s_{x,y}(t)& =s_{x}(t)-s_{y}(t)\\
+& =(a_{x}+b_{x}t)e^{-c_{x}t}+d_{x}-((a_{y}+b_{y}t)e^{-c_{y}t}+d_{y})\\
+\end{split}
+\label{eq:abcd_diff_c}
+\end{equation}
+
+considering $t_{max}(x)$ equation for $s_{x}$ :
+
+\begin{equation}
+[-c_{x}(a_{x}+b_{x}t_{max}(x))+b_{x}]e^{-c_{x}t_{max}(x)}=0
+\label{eqn:equation_max_time}
+\end{equation}
+
+then $t_{max}(x,y)$ equation for $s_{x,y}$ is:
+
+\begin{equation}
+\begin{split}
+ [-c_{x}(a_{x}+b_{x}t_{max}(x,y))+b_{x}]e^{-c_{x}t_{max}(x,y)}-\\
+ [-c_{y}(a_{y}+b_{y}t_{max}(x,y))+b_{y}]e^{-c_{y}t_{max}(x,y)}=0\,.
+\label{eq:t_max_relative}
+\end{split}
+\end{equation}
+
+Unfortunately, it is impossible to retrieve $t_{max}(x,y)$ because of the problematic form:
+
+\begin{equation}
+    y=b e^{b}
+\label{eq:problem}
+\end{equation}
+
+Because of this result it is impossible to study the problem with a ``reductio per absurdum" and it is necessary to make an attempt retrieving an abcd from $s_{x,y}$:
+
+\begin{equation}
+\begin{split}
+s_{x,y}(t)& =s_{x}(t)-s_{y}(t)\\
+& =(a_{x}+b_{x}t)e^{-c_{x}t}+d_{x}-((a_{y}+b_{y}t)e^{-c_{y}t}+d_{y})\\
+&=(a_{x}+b_{x}t)e^{-c_{x}t}+d_{x,y}\,,
+\end{split}
+\label{eq:s_x,y_is_abcd}
+\end{equation}
+
+where: $d_{x,y}=d_{x}-((a_{y}+b_{y}t)e^{-c_{y}t}+d_{y})$\,.
+
+
+This means that $s_{x,y}$ is still an abcd basis, but $d$ is time dependent, reason why looking at the empirical results it seemed an abcd one.
+Therefore, it makes no sense to talk about relative abcd retrieved from absolute abcd with different $c$.
+
+Given these findings, what did it happen when $s_{x,y}$ was treated as an abcd in \cite{ametrano_ballabio_mazzocchi}? 
+They calibrated $s_{6M}$ on the bootstrapped ON curve and then they obtained by construction $s_{x,6M}$ as abcd. Given that $s_{6M}$ and $s_{x,6M}$ were abcd, but with different $c$, it follows that $s_{x}$ was not abcd.
+The only drawback in the adopted scheme is the impossibility to swap from relative to absolute basis.
+Acting in this way \cite{ametrano_ballabio_mazzocchi} created two different models, for the absolute basis and for the relative ones, that can be reconciled guaranteeing that $c$ is the same for both the absolute and relative basis. 
+Obviously, according to the performed calibration (incremental or not), different parameters are estimated, but with a common $c$ is possible to swap from a basis to the other independently from the calibration type.
+
+
+\section*{Aim}
+
+For all the above mentioned reasons, the ideas that need to be investigated are:
+
+\begin{enumerate}
+
+\item reparameterization of the model, in its continuous form, relying on the following parameters: 
+
+\begin{equation}
+    a_{x}, d_{x}, t_{max}, s_{x}(t_{max})\,.
+    \label{parameters}
+\end{equation}
+
+The new parametric form gives financial meaning to the model parameters, because:
+
+\begin{itemize}
+    \item $a_{x} + d_{x}$ is the value of the abcd corresponding to $t=0$;
+    \item $d_{x}$ is the long run value of the abcd basis;
+    \item $t_{max}$ represents the peak of uncertainty in terms of time;
+    \item $s_{x}(t_{max})$ is the value of the abcd at the peak of uncertainty.
+\end{itemize}
+Remarkable feature should be that, after retrieving the new parametric form, all the analytical findings from \cite{ametrano_ballabio_mazzocchi} could be exploited, just moving from the new parametric form to the old abcd one.
+In this way, the users are given an interface, which allows them to directly manage the maxima of the basis and the basis time of maximum as observed on the markets.
+
+\item modification of the framework according to the idea of a globally shared $t_{max}$, studying the financial intuition behind it;
+
+\item modification of the framework according to the idea of a globally shared $t_{max}$ and $c$, in order to completely validate the model and the underling financial intuition.
+
+\end{enumerate}
+}

@@ -1,0 +1,308 @@
+\chapter{Interest Rate}
+\label{chap:int_rate}
+
+
+\section{Interest Rate and its components}
+
+In a world based upon financial markets the fundamental rule is that ``to collaborate with someone, people want to be remunerated".
+The basic financial action that agents can do is to lend their money, but, given the above mentioned rule, this action has to be supported by a reward: the interest I.
+There are multiple reasons why interest exists and all of them are linked with the time-value of money, the implied benefits deriving from the possession of legal tender currency. Therefore, interest rate should be higher enough for compensating :
+
+\begin{enumerate}
+\item preference for liquidity, the value that an agent attributes on keeping cash in his bank account;
+\item alternative risk free investment, the value that an agent may have investing in less risky assets;
+\item inflation effects, the eroding power of inflation w.r.t. accrued gain;
+\item borrower's creditworthiness, the risk embedded in the borrower itself.
+\end{enumerate}
+
+For instance, considering a lender L and a borrower B, when B borrows from L a notional N expressed in the legal tender from $t_{1}$ up to $t_{2}$, L accepts if and only if at the maturity B gives back:
+
+\begin{equation}
+    N+I=N+N h(R_{(t_{1},t_{2})},\tau(t_{1},t_{2})) =N (1+  h(R_{(t_{1},t_{2})},\tau(t_{1},t_{2})))\,,
+\end{equation}
+
+where:
+
+\begin{itemize}
+    \item $t_{2}=t_{1}+x$;
+    \item $I = N(h(R_{(t_{1},t_{2})},\tau(t_{1},t_{2}))$ accrued interest in the period $\tau(t_{1},t_{2})$ applying the rate $R_{(t_{1},t_{2})}$;
+    \item $h(R_{(t_{1},t_{2})},\tau(t_{1},t_{2})$ is the capitalization factor: percentage value applied to a notional today which gives the final amount to reimburse at the maturity.
+    Its inverse is the discount factor, the value of the final amount today.
+    \item $\tau(t_{1},t_{2})$ is the year fraction: time from the starting of the contract $t_{1}$ to the maturity $t_{2}$, expressed with year as tenure (time/ year), in accordance with business day convention (BDC), day count convention (DCC) and market convention (for instance interest rate products start accruing 2 days after the start of their contracts).
+    \item $R_{(t_{1},t_{2})}$ is the applied interest rate between 2 points of time, $t_{1},t_{2}$.
+    
+\end{itemize}
+
+The introduction of $h(R,\tau)$ and its components requires the explanation of these new objects.
+
+\section{Year fraction}
+
+Roughly speaking, year fraction indicates the time between two generic points of time $t_{1},t_{2}$ expressed in term of years : 
+
+\begin{equation}
+    RawYearFraction=\dfrac{t_{2}-t_{1}}{year}\,.
+    \label{eq:raw_yf}
+\end{equation}
+
+In the real world there is no homogeneous date framework (for instance, there are different calendars for different stock exchanges) so that, in order to consider a generic time $t$ it's necessary to deal with:
+
+\begin{enumerate}
+\item Business day convention: convention for managing a fixing date which falls on a vacation day;
+\item Day count convention: convention for counting days.
+\end{enumerate}
+
+Business day conventions can be grouped in:
+
+\begin{itemize}
+\item Following (Preceding): if $t$ is a vacation day, then the fixing date falls in the first next (previous) business day; 
+\item Modified following (Preceding): if $t$ is a vacation day and the first next (previous) business day belongs to the considered month then the following (preceding) convention is applied, otherwise the preceding (following) one is applied;
+\item End of Month: when the start date of a period is on the final business day of a particular
+calendar month, the end date is on the final business day of the end month.
+\end{itemize}
+
+
+Day count conventions depend on the considered markets:
+
+\begin{itemize}
+    \item Money Market: $\frac{Actual}{Actual}$, $\frac{Actual}{365Fixed}$,$\frac{Actual}{365}$, $\frac{Actual}{360}$; 
+    \item Bond market: $\frac{30}{360}$;
+    \item Treasury market: $\frac{Actual}{360}$;
+\end{itemize}
+
+where:
+
+\begin{enumerate}
+    \item Numerator
+    
+    \begin{itemize}
+    \item ``Actual" means the days are counted according to the considered calendar;
+    \item ``30" indicates that each month has 30 days.
+    \end{itemize}
+    
+    \item Denominator:
+    
+    \begin{itemize}
+    \item ``360/365" means that the considered year has 360/365 days;
+    \item ``365Fixed" indicates that years normally have 365 days, leap years are not considered.
+    \end{itemize}
+    
+\end{enumerate}
+
+
+Given the above reported explanation, it should be now clear that the year fraction cannot be simply seen as \eqref{eq:raw_yf}, but it is:
+
+\begin{equation}
+    \tau(t_{1},t_{2},BDC,DCC)=\dfrac{t_{2}(BDC,DCC)-t_{1}(BDC,DCC)}{f(year)}\,.
+\end{equation}
+
+For readability purposes, in the following explanation, the above equation is written as $\tau(t_{1},t_{2})$.
+
+\section{Type and form of Interest Rate}
+
+\subsection{Type} 
+
+The type of interest depends on the rule of interest accruing.
+
+The simple one is the ``simple interest", it means that a certain interest is applied for a certain time to a certain notional (that is the same of the initial example). Therefore, mathematically it is possible to describe the accrued interest between $t_{1}$ and $t_{2}$ as:
+
+\begin{equation}
+   I(R_{(t_{1},t_{2})},\tau(t_{1},t_{2}))= N R_{(t_{1},t_{2})} \tau(t_{1},t_{2})\,.
+   \label{eq:simple_interest}
+\end{equation}
+
+The capitalization factor, which indicates how much it grows an unit of currency in the specific interest regime, is:
+
+\begin{equation}
+    h(R_{(t_{1},t_{2})},\tau(t_{1},t_{2})) =1+ R_{(t_{1},t_{2})} \tau(t_{1},t_{2})\,,
+    \label{eq:simple_interest_cf}
+\end{equation}
+
+while, remembering that exists an inverse relation between discount factor and capitalization factor, the former is:
+
+\begin{equation}
+    D(R_{(t_{1},t_{2})},\tau(t_{1},t_{2})) =\dfrac{1}{1+ R_{(t_{1},t_{2})} \tau(t_{1},t_{2})}
+    \label{eq:simple_interest_df}
+\end{equation}
+
+Example: investing N of notional for one year (in a world where one year is represented with 1) starting from today ($t_{1}=0$) up to one year ($t_{2}=1$) with $R_{(t_{1},t_{2})}$ as corresponding interest rate, the final amount of cash will be:
+
+\begin{equation*}
+  N(1+ R_{(t_{1},t_{2})}*1)\,.
+\end{equation*}
+
+Instead of investing N for one year, it is possible to invest for n year , reinvesting each year the accrued interest :
+
+\begin{equation*}
+  x=N(1+ R_{(t_{1},t_{2})}*1)(1+ R_{(t_{2},t_{3})}*1)\dots(1+ R_{(t_{N-1},t_{N})}*1)\,,
+\end{equation*}
+
+considering that $R_{(t_{i-1},t_{i})}$ are equivalent the above equation can be rewritten as:
+
+\begin{equation*}
+  x=N(1+ R_{(t_{1},t_{2})}*1)^{n}\,.
+\end{equation*}
+
+Investing each month instead of each year (for an year) leads to:
+
+\begin{equation*}
+  x=N\left(1+ \dfrac{R_{(t_{1},t_{2})}}{m}\right)^{m}\,,
+\end{equation*}
+
+because the rate is applied for 1/m year for m times.
+Generalizing the notion, it is possible to write:
+
+\begin{equation*}
+  x=N\left(1+ \dfrac{R_{(t_{1},t_{2})}}{m}\right)^{m n}\,,
+\end{equation*}
+
+that is what is obtained investing for n years reinvesting m times for year, the years can be expressed as year fraction: $\tau{(0,n)}$.
+With a further generalization the spanning period can be simply represented as an investment that goes from $t_{1}$ up to $t_{2}$, therefore the capitalization factor becomes:
+
+\begin{equation}
+    h(R_{(t_{1},t_{2})},\tau(t_{1},t_{2})) =\left(1+ \dfrac{R_{(t_{1},t_{2})}}{m}\right)^{m  \tau(t_{1},t_{2})}\,,
+    \label{eq:compounded_interest_cf}
+\end{equation}
+
+while the corresponding discount factor is:
+
+\begin{equation}
+    D(R_{(t_{1},t_{2})},\tau(t_{1},t_{2})) =\left(1+ \dfrac{R_{(t_{1},t_{2})}}{m}\right)^{-m  \tau(t_{1},t_{2})}\,.
+    \label{eq:compounded_interest_df}
+\end{equation}
+
+In the end, reinvesting infinite times, stressing the \eqref{eq:compounded_interest_cf} equation, for m that goes to infinite:
+
+\begin{equation*}
+  \lim_{m \to \infty}\left(1+ \dfrac{R_{(t_{1},t_{2})}}{m}\right)^{m \tau(t_{1},t_{2})}\,,
+\end{equation*}
+
+because of Nepero limit:
+
+\begin{equation*}
+  \lim_{m \to \infty}\left(1+ \dfrac{1}{m}\right)^{m}= e
+\end{equation*}
+
+changing variable and posing $z=\dfrac{m}{R_{(t_{1},t_{2})}}$, such that $m=z R_{(t_{1},t_{2})}$  and z is still pointing to infinite:
+
+\begin{equation*}
+  \lim_{z \to \infty}\left[\left(1+ \dfrac{1}{z}\right)^z\right]^{ \tau(t_{1},t_{2}) R_{(t_{1},t_{2})}}
+\end{equation*}
+
+can be rewritten as:
+
+\begin{equation}
+   h(R_{(t_{1},t_{2})},\tau(t_{1},t_{2}))=e^{ \tau(t_{1},t_{2})R_{(t_{1},t_{2})}}
+  \label{eq:cont_compounded_interest_cf}
+\end{equation}
+
+that is the continuously compounded capitalization factor. While its corresponding discount factor is:
+
+\begin{equation}
+  D(R_{(t_{1},t_{2})},\tau(t_{1},t_{2}))=e^{- \tau(t_{1},t_{2})R_{(t_{1},t_{2})}}\,.
+  \label{eq:cont_compounded_interest_df}
+\end{equation}
+
+\subsection{Form} 
+
+The same rate can have different forms:
+
+\begin{enumerate}
+    \item spot rate: rate which starts accruing interest today (the spot date, that for interest rate derivatives is today plus 2 days) until a certain time T;
+    \item forward rate: rate which starts accruing interest at a future date (greater the the spot date) until a certain time T;
+    \item instantaneous forward rate: rate which accrues interest from a certain t to $t+ \Delta t$, where $\Delta t \to 0$, for such reason is called instantaneous.
+\end{enumerate}
+
+Specifying just for this section $R(t_{0},t)$ as $R(t)$ and $\tau(t_{0},t)$ as t, given $R(t)$ and $R(t+ \Delta t)$, taking the relative increment from t to $t+ \Delta t$ with respect to time, it is obtained :
+
+\begin{equation*}
+f(t,t+ \Delta t) =\dfrac{R(t+ \Delta t)(t+ \Delta t)-R(t)t}{\Delta t}\\
+\end{equation*}
+
+taking $\Delta t \to 0$:
+
+\begin{equation*}
+\begin{split}
+\lim_{\Delta t \to 0}f(t,t+ \Delta t)& =\lim_{\Delta t \to 0}\dfrac{R(t+ \Delta t)(t+ \Delta t)-R(t)t}{\Delta t}\\
+& =\lim_{\Delta t \to 0}\dfrac{R(t+ \Delta t)\Delta t}{\Delta t}+\dfrac{t(R(t+ \Delta t)-R(t))}{\Delta t}\\
+\end{split}
+\end{equation*}
+
+solving the limit:
+
+\begin{equation*}
+\begin{split}
+f(t,t+ \Delta t)& =R(t)+t\frac{\partial R(t)}{\partial t}\\
+&=\frac{\partial t}{\partial t}R(t)+t\frac{\partial R(t)}{\partial t}\\
+&=\frac{\partial R(t)t}{\partial t}\\
+\end{split}
+\end{equation*}
+
+integrating both sides:
+
+\begin{equation*}
+\int_{t_{0}}^{t}f(u,u+ \Delta u) \mathrm{d}u=R(t)t\,.
+\end{equation*}
+
+Therefore, $R(t)$ can be seen as the average of instantaneous forward rate between $t_{0}$  and t:
+
+\begin{equation}
+R(t)=\dfrac{\int_{t_{0}}^{t}f(u,u+ \Delta u)\mathrm{d}u}{t}\,.
+\label{eq: spotdate_as_average_ifr}
+\end{equation}
+
+Remembering \eqref{eq:cont_compounded_interest_df} and indicating t as $\tau(t_{0},t)$, it follows that in continuous time the discount factor can be seen as:
+
+\begin{equation}
+D(R_{(0,t)},\tau(0,t))=e^{-\int_{\tau(0,t_{0})}^{\tau(0,t)}f(u,u+ \Delta u) \mathrm{d}u}
+\label{eq:cont_compounded_interest_df_from_ifr}
+\end{equation}
+
+and more generally:
+
+\begin{equation*}
+D(R_{(t_{1},t_{2})},\tau(t_{1},t_{2}))=e^{-\int_{\tau(t_{0},t_{1})}^{\tau(t_{0},t_{2})}f(u,u+ \Delta u) \mathrm{d}u}\,.
+\end{equation*}
+
+
+Pay attention: this integral makes sense if and only if the adopted DCC is strictly monotone.
+
+\section{Relations}
+
+Beyond the above reported relation, particularly interesting it is the no arbitrage relation which follows: in an arbitrage free world investing today $t_{0}$ until $t_{2}$ or investing from $t_{0}$ to $t_{1}$ and from $t_{1}$ to $t_{2}$
+should be equivalent, otherwise all the investor would investing in one or the other strategy until when, because of the market adjustments, they are indifferent between the two.
+Therefore, it is valid that:
+
+\begin{equation*}
+e^{R_{(t_{0},t_{1})}\tau(t_{0},t_{1})}e^{F_{(t_{1},t_{2})}\tau(t_{1},t_{2})}=e^{R_{(t_{0},t_{2})}\tau(t_{0},t_{2})}
+\end{equation*}
+
+and the forward rate can be retrieved as:
+
+\begin{equation}
+F_{(t_{1},t_{2})}=\dfrac{R_{(t_{0},t_{2})}\tau(t_{0},t_{2})-R_{(t_{0},t_{1})}\tau(t_{0},t_{1})}{\tau(t_{1},t_{2})}\,.
+\label{eq:no_arbitrage_forward_cc}
+\end{equation}
+
+Moreover, considering the simple capitalization factor, it is possible to obtain a similar approximated relation:
+
+\begin{equation*}
+(1+R_{(t_{0},t_{1})}\tau(t_{0},t_{1}))(1+ F_{(t_{1},t_{2})}\tau(t_{1},t_{2}))=(1 + R_{(t_{0},t_{2})}\tau(t_{0},t_{2}))
+\end{equation*}
+
+that leads to :
+
+\begin{equation}
+F_{(t_{1},t_{2})}=\dfrac{1}{\tau(t_{1},t_{2})}\left(\dfrac{D(t_{0},t_{1})}{D(t_{1},t_{2})}-1\right)\,,
+\label{eq:no_arbitrage_forward_sc}
+\end{equation}
+ 
+which is essential because allows retrieving F, as discount factors ratio, independently from what form of D has been employed.
+
+Then, considering \eqref{eq:cont_compounded_interest_df_from_ifr}, it can be rewritten as:
+
+\begin{equation}
+F_{(t_{1},t_{2})}=\dfrac{1}{\tau(t_{1},t_{2})}\left(e^{-\int_{\tau(t_{0},t_{1})}^{\tau(t_{0},t_{2})}f(u,u+ \Delta u) \mathrm{d}u}-1\right)\,.
+\label{eq:no_arbitrage_forward_sc_int}
+\end{equation}
+
+These relations are fundamental for two reasons, firstly \eqref{eq:no_arbitrage_forward_sc} allows to model F starting from an instantaneous forward rate f and it is the crucial point in abcd framework and its revision. Secondly, during the financial crisis this relation stopped to be valid on the standard curve and today it holds only on each curve of the multiple curves world where ``investing in $t_{0}$ up to $t_{2}$ or investing from $t_{0}$ to $t_{1}$ and from $t_{1}$ to $t_{2}$ it's equivalent". However, considering different tenors x and y, where $ x>y$, it is valid if and only if there is a basis on the rate y that spans from $t_{0}$ to $t_{2}$ in order to compensate the credit and maturity risks implied in greater tenor.\footnote{In the following instead of the pair $(t_{1},t_{2})$ the time will be represented as $(t,t+x)$}

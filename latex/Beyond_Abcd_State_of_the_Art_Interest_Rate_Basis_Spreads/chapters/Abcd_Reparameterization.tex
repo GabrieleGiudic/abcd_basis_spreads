@@ -1,0 +1,119 @@
+\chapter{Abcd Alternative Parameterization}
+\label{chap:Abcd Reparameterization}
+
+
+\section{Parameters conversion}
+Going through the practical side of the exhibited idea, problems are encountered retrieving $b$ and $c$ functional forms.
+
+Given that the choice of how to specify the parameters is ambiguous, the equations of $s_{x}(t_{max})$ and $t_{max}$ have been plugged into a system, in order to explicit $c$ and $b$:
+
+
+$\begin{cases} 
+s_{x}(t_{max})=\frac{b_{x}}{c_{x}} e^{(\frac{a_{x}c_{x}}{b_{x}}-1)} +d_{x} &\eqref{eqn:max_func}
+\\
+t_{max}=\dfrac{1}{c_{x}} - \dfrac{a_{x}} {b_{x}} & \eqref{eqn:max_time}
+\end{cases}$
+
+
+Note: to achieve better readability during this mathematical steps:
+\begin{itemize}
+\item $s_{x}(t_{max})$ is written as: $s$;
+\item $t_{max}$ is written as: $t$; 
+\item all the parameters are expressed without considering the tenor, in a generic way;
+\end{itemize}
+Starting from \eqref{eqn:max_time}:
+
+\begin{equation*}
+t=\dfrac{1}{c} - \dfrac{a} {b}
+\end{equation*}
+\begin{equation*}
+\dfrac{1}{c}= t+\dfrac{a} {b}\,.
+\end{equation*}
+
+This equation is obtained:
+
+\begin{equation}
+ c=\dfrac{b} {a+tb} \,.
+\label{eqn:c_max}
+\end{equation}
+
+Then, working on \eqref{eqn:max_func}:
+
+\begin{equation*}
+s=\frac{b}{c} e^{\left(\frac{ac}{b}-1\right)} +d 
+\end{equation*}
+
+and plugging \eqref{eqn:c_max}, the following is obtained:
+
+\begin{equation*}
+    s=(bt+a) e^{\left(\frac{a}{bt+a}-1\right)} +d\,,
+\end{equation*}
+
+but $b$ cannot be retrieved because of the presence of a form such as \eqref{eq:problem}.
+
+
+A further solution can be to retrieve $b$ from \eqref{eqn:max_time}:
+
+\begin{equation}
+    b=\frac{ac}{1-tc}
+\label{eqn:b_max} 
+\end{equation}
+
+and then substitute in \eqref{eqn:max_func}, obtaining:
+\begin{equation*}
+    s=\frac{a}{1-tc}e^{(-tc)}+d\,.
+\end{equation*}
+
+However, the above mentioned problem persists \eqref{eq:problem}.\\\\
+Another solution can be to consider that because of the nested calibration $ t_{max}$ is a constant, then \eqref{eqn:max_func} simply becomes:
+
+\begin{equation}
+s=(a+ b t)e^{(-c t)} + d\,.
+\label{eq:abcd_no_tenor}
+\end{equation}
+
+Rewriting the above equation, $b$ is obtained:
+
+\begin{equation*}\,.
+b=\frac{s-d}{te^{(-ct)}}-\frac{a}{t}
+\end{equation*}
+
+Plugging \eqref{eqn:c_max}:
+
+\begin{equation*}
+\begin{split}
+b& =\frac{s-d}{te^{(-\frac{bt} {a+tb})}}-\frac{a}{t}\,.
+\end{split}
+\end{equation*}
+
+Unfortunately, once again, the problem remains.
+
+
+In the end, even when plugging \eqref{eqn:b_max} in \eqref{eq:abcd_no_tenor} the problem still remains:
+
+\begin{equation*}
+    s=\left(a+\frac{act}{1-tc}\right)e^{(-c t)} + d\,.
+\end{equation*}
+
+
+These attempts lead to a mandatory adjustment of the main idea previously exhibited and are exposed in the following paragraphs.
+
+\section{Idea adjustment}
+
+
+Given the above mentioned considerations, it is necessary to partially rethink the main idea of the model reparameterization. Given that the users need the meaningful strip of input parameters $a_{x}, d_{x}, s(t_{max}), t_{max}$, while the presence of $s(t_{max})$ has no particular model implications \footnote{For instance, it makes no sense to fix $s(t_{max})$ while it makes sense to fix $t_{max}$.}, the idea is to leave an interface such as $a_{x}, d_{x}, s(t_{max}), t_{max}$ numerically retrieving:
+
+\begin{equation}
+    a_{x}, c_{x}, d_{x}, t_{max}
+    \label{eq:new parameters}
+\end{equation}
+
+allowing:
+
+\begin{enumerate}
+    \item a meaningful input form such that the users do not need to brute force the input slot in order to calibrate the model, but it can easily chose the parameters looking at the markets;
+    \item work on the parameters with a prominent role in the model: $c$ and $t_{max}$.
+\end{enumerate}
+
+Note: the introduction of the parameter $t_{max}$ is so relevant because it is far easier to calibrate it as a model parameter with respect to fix it as a bound which should be commonly respected.
+
