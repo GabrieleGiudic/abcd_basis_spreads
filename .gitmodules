@@ -1,9 +1,9 @@
 [submodule "code/QuantLib"]
 	path = code/QuantLib
-	url = https://github.com/paolomazzocchi/QuantLib.git
+	url = https://github.com/GabrieleGiudic/abcd_basis_spreads/tree/master.git
 [submodule "code/QuantLib-SWIG"]
 	path = code/QuantLib-SWIG
-	url = https://github.com/lballabio/QuantLib-SWIG.git
+	url = https://github.com/GabrieleGiudic/abcd_basis_spreads/tree/master.git
 [submodule "code/QuantLibAddin"]
 	path = code/QuantLibAddin
-	url = https://github.com/paolomazzocchi/QuantLibAddin-Old.git
+	url = https://github.com/GabrieleGiudic/abcd_basis_spreads/tree/master.git
